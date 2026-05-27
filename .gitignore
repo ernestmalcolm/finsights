@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# unused large data file (full GL ledger — not needed at runtime)
+/data/gl.json
