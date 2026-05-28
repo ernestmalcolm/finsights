@@ -1,9 +1,11 @@
 'use client';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useMantineColorScheme } from '@mantine/core';
 import { IconSun, IconMoon, IconMenu2 } from '@tabler/icons-react';
 import { useYear } from '@/lib/context';
 import { YEARS } from '@/lib/data';
+import Logo from '@/components/Logo';
 
 const PAGE_TITLES: Record<string, string> = {
   '/overview':      'Sector Overview',
@@ -20,7 +22,7 @@ export default function TopBar({ collapsed, onToggle }: Props) {
   const path = usePathname();
   const { toggleColorScheme } = useMantineColorScheme();
   const { year, setYear } = useYear();
-  const title = PAGE_TITLES[path] ?? 'BankSphere';
+  const title = PAGE_TITLES[path] ?? 'FinSights';
 
   return (
     <header style={{
@@ -34,6 +36,13 @@ export default function TopBar({ collapsed, onToggle }: Props) {
       }}>
         <IconMenu2 size={18} />
       </button>
+
+      {/* Logo mark — home link, shown when sidebar is collapsed (desktop icon-only / mobile hidden) */}
+      {collapsed && (
+        <Link href="/" style={{ textDecoration: 'none', flexShrink: 0, display: 'flex' }} title="FinSights Home">
+          <Logo size={28} iconOnly />
+        </Link>
+      )}
 
       <div style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
         <h1 style={{

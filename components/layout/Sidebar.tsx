@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Logo from '@/components/Logo';
 import {
   IconLayoutDashboard, IconBuildingBank, IconBook2,
   IconChartBar, IconWorld, IconAlertTriangle,
@@ -46,19 +47,10 @@ export default function Sidebar({ collapsed, isMobile = false, onToggle }: Props
         justifyContent: (!isMobile && collapsed) ? 'center' : 'space-between',
         gap: 10,
       }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 32, height: 32, borderRadius: 8, background: 'var(--bs-amber)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-          }}>
-            <span style={{ color: '#000', fontWeight: 800, fontSize: 14 }}>F</span>
-          </div>
-          {(isMobile || !collapsed) && (
-            <span style={{ fontWeight: 700, fontSize: 16, color: 'var(--bs-text)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
-              Fin<span style={{ color: 'var(--bs-amber)' }}>Sights</span>
-            </span>
-          )}
-        </div>
+        <Logo
+          size={32}
+          iconOnly={!isMobile && collapsed}
+        />
         {/* Close button on mobile */}
         {isMobile && (
           <button onClick={onToggle} style={{

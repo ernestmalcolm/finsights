@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Modal } from '@mantine/core';
+import Logo from '@/components/Logo';
 import {
   IconChartBar, IconBuildingBank, IconBook2, IconWorld,
   IconAlertTriangle, IconLayoutDashboard, IconBrandWhatsapp,
@@ -9,23 +10,6 @@ import {
   IconCheck, IconTrendingUp, IconLock, IconLockOpen,
   IconRocket, IconChartCandle, IconBriefcase, IconClock,
 } from '@tabler/icons-react';
-
-// ── Brand mark ──────────────────────────────────────────────────────────────
-function Logo({ size = 28 }: { size?: number }) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <div style={{
-        width: size, height: size, borderRadius: 7, background: 'var(--bs-amber)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-      }}>
-        <span style={{ color: '#000', fontWeight: 800, fontSize: size * 0.5 }}>F</span>
-      </div>
-      <span style={{ fontWeight: 700, fontSize: size * 0.6, color: 'var(--bs-text)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
-        Fin<span style={{ color: 'var(--bs-amber)' }}>Sights</span>
-      </span>
-    </div>
-  );
-}
 
 // ── Contact modal ────────────────────────────────────────────────────────────
 function ContactModal({ opened, onClose }: { opened: boolean; onClose: () => void }) {
