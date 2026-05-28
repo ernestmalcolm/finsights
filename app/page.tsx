@@ -224,7 +224,7 @@ function ComingSoonCard({ icon: Icon, title, desc, eta }: { icon: React.ElementT
 // ── Compare row ──────────────────────────────────────────────────────────────
 function CompareRow({ them, us }: { them: string; us: string }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+    <div className="fs-compare-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
       <div style={{
         display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px',
         borderRadius: 10, background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)',
@@ -252,7 +252,7 @@ export default function HomePage() {
       <ContactModal opened={contactOpen} onClose={() => setContactOpen(false)} />
 
       {/* ── Navbar ── */}
-      <nav style={{
+      <nav className="fs-nav" style={{
         position: 'sticky', top: 0, zIndex: 100,
         background: 'var(--bs-surface)', borderBottom: '1px solid var(--bs-border)',
         padding: '0 32px', height: 64,
@@ -262,6 +262,7 @@ export default function HomePage() {
         <Logo size={30} />
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <button
+            className="fs-nav-contact"
             onClick={() => setContactOpen(true)}
             style={{
               background: 'transparent', border: '1px solid var(--bs-border)',
@@ -278,14 +279,16 @@ export default function HomePage() {
               cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
               fontFamily: 'var(--font-sora)',
             }}>
-              View Dashboard <IconArrowRight size={14} />
+              <span className="fs-nav-btn-text">View Dashboard</span>
+              <span style={{ display: 'none' }} className="fs-nav-btn-icon">Dashboard</span>
+              <IconArrowRight size={14} />
             </button>
           </Link>
         </div>
       </nav>
 
       {/* ── Hero ── */}
-      <section style={{
+      <section className="fs-hero" style={{
         position: 'relative', overflow: 'hidden',
         padding: '100px 32px 80px',
         background: `
@@ -302,10 +305,11 @@ export default function HomePage() {
 
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
           {/* Eyebrow */}
-          <div style={{
+          <div className="fs-eyebrow" style={{
             display: 'inline-flex', alignItems: 'center', gap: 8,
             background: 'var(--bs-amber-dim)', border: '1px solid rgba(245,158,11,0.3)',
             borderRadius: 100, padding: '5px 14px', marginBottom: 32,
+            flexWrap: 'wrap', justifyContent: 'center',
           }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--bs-amber)', animation: 'pulse 2s infinite' }} />
             <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--bs-amber)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
@@ -314,7 +318,7 @@ export default function HomePage() {
           </div>
 
           {/* Headline */}
-          <h1 style={{
+          <h1 className="fs-hero-h1" style={{
             margin: '0 0 24px', fontWeight: 800, lineHeight: 1.1,
             fontSize: 'clamp(36px, 6vw, 66px)',
             letterSpacing: '-0.03em', color: 'var(--bs-text)',
@@ -365,7 +369,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Stats strip ── */}
-      <section style={{
+      <section className="fs-stats" style={{
         borderTop: '1px solid var(--bs-border)', borderBottom: '1px solid var(--bs-border)',
         padding: '40px 32px', background: 'var(--bs-surface)',
       }}>
@@ -383,7 +387,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Features ── */}
-      <section style={{ padding: '80px 32px', maxWidth: 1080, margin: '0 auto' }}>
+      <section className="fs-section" style={{ padding: '80px 32px', maxWidth: 1080, margin: '0 auto' }}>
         <div style={{ textAlign: 'center', marginBottom: 52 }}>
           <p style={{ margin: '0 0 12px', fontSize: 12, color: 'var(--bs-amber)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
             What&apos;s Inside
@@ -427,7 +431,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Why FinSights ── */}
-      <section style={{
+      <section className="fs-surface" style={{
         padding: '80px 32px',
         background: 'var(--bs-surface)',
         borderTop: '1px solid var(--bs-border)',
@@ -447,7 +451,7 @@ export default function HomePage() {
           </div>
 
           {/* Column headers */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 10 }}>
+          <div className="fs-compare-headers" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 10 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 16 }}>
               <IconLock size={13} style={{ color: 'var(--bs-red)' }} />
               <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--bs-muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>The status quo</span>
@@ -458,7 +462,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="fs-compare-grid" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <CompareRow them="Static PDFs and annual reports"    us="Live interactive charts & dynamic filters" />
             <CompareRow them="Outdated, hard-to-read charts"     us="Modern visualisations built for clarity" />
             <CompareRow them="Data scattered across 10 websites" us="All 10 banks consolidated in one place" />
@@ -469,7 +473,7 @@ export default function HomePage() {
       </section>
 
       {/* ── CTA Banner ── */}
-      <section style={{
+      <section className="fs-cta" style={{
         padding: '80px 32px', textAlign: 'center',
         background: `
           radial-gradient(ellipse 100% 100% at 50% 50%, rgba(245,158,11,0.07) 0%, transparent 70%)
@@ -509,7 +513,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Footer ── */}
-      <footer style={{
+      <footer className="fs-footer" style={{
         borderTop: '1px solid var(--bs-border)', background: 'var(--bs-surface)',
         padding: '32px 32px', display: 'flex', alignItems: 'center',
         justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
@@ -521,7 +525,7 @@ export default function HomePage() {
           </span>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div className="fs-footer-links" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <a
             href="https://www.linkedin.com/in/eric-alex-hamissi-b0b02119b/"
             target="_blank" rel="noopener noreferrer"
@@ -552,6 +556,29 @@ export default function HomePage() {
         @keyframes pulse {
           0%, 100% { opacity: 1; }
           50% { opacity: 0.4; }
+        }
+
+        /* ── Responsive homepage ── */
+        @media (max-width: 640px) {
+          .fs-nav         { padding: 0 16px !important; }
+          .fs-nav-contact { display: none !important; }
+          .fs-hero        { padding: 60px 20px 48px !important; }
+          .fs-eyebrow     { padding: 4px 10px !important; }
+          .fs-eyebrow span { font-size: 10px !important; letter-spacing: 0.04em !important; white-space: normal !important; text-align: center; }
+          .fs-stats       { padding: 28px 16px !important; }
+          .fs-section     { padding: 52px 20px !important; max-width: 100% !important; }
+          .fs-surface     { padding: 52px 20px !important; }
+          .fs-cta         { padding: 56px 20px !important; }
+          .fs-compare-row { grid-template-columns: 1fr !important; }
+          .fs-compare-headers { display: none !important; }
+          .fs-footer      { flex-direction: column !important; gap: 20px !important; padding: 24px 20px !important; }
+          .fs-footer-links { flex-wrap: wrap !important; gap: 12px !important; }
+          .fs-nav-btn-text { display: none !important; }
+          .fs-nav-btn-icon { display: inline !important; }
+        }
+
+        @media (max-width: 480px) {
+          .fs-hero-h1 { font-size: 34px !important; }
         }
       `}</style>
     </div>

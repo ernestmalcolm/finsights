@@ -35,9 +35,49 @@ const theme = createTheme({
   },
 });
 
+const siteUrl = 'https://finsights.vercel.app';
+const siteTitle = 'FinSights — Tanzania Banking Intelligence';
+const siteDescription =
+  'Interactive financial analytics for Tanzania\'s banking sector. Track assets, P&L, NPLs, and macro trends across 10 major banks — 2017 to 2024. Expanding to startups, investments & DSE stocks.';
+
 export const metadata: Metadata = {
-  title: 'FinSights — Tanzania Banking Intelligence',
-  description: 'Open, interactive financial analytics for Tanzania\'s banking sector. Track assets, P&L, NPLs and macro trends across 10 major banks — 2017 to 2024.',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: siteTitle,
+    template: '%s | FinSights',
+  },
+  description: siteDescription,
+  keywords: [
+    'Tanzania banking', 'Tanzania financial data', 'bank analytics Tanzania',
+    'CRDB', 'NMB', 'NBC Tanzania', 'Stanbic Tanzania', 'DTB Tanzania',
+    'NPL ratio Tanzania', 'P&L banking Tanzania', 'financial intelligence Tanzania',
+    'DSE Tanzania', 'Tanzania economy', 'FinSights', 'banking dashboard',
+    'financial sector Tanzania', 'banking KPIs', 'Tanzania macro indicators',
+    'East Africa finance', 'open financial data',
+  ],
+  authors: [{ name: 'Eric-Alex Hamissi', url: 'https://www.linkedin.com/in/eric-alex-hamissi-b0b02119b/' }],
+  creator: 'Eric-Alex Hamissi',
+  publisher: 'FinSights',
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_TZ',
+    url: siteUrl,
+    siteName: 'FinSights',
+    title: siteTitle,
+    description: siteDescription,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteTitle,
+    description: siteDescription,
+    creator: '@finsights',
+  },
+  category: 'finance',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

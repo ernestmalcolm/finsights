@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <clipPath id="outer">
+      <rect width="64" height="64" rx="14"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#outer)">
+    <!-- Left half: amber for F -->
+    <rect x="0" y="0" width="32" height="64" fill="#F59E0B"/>
+    <!-- Right half: deep dark for I -->
+    <rect x="32" y="0" width="32" height="64" fill="#0f172a"/>
+
+    <!-- Subtle centre divider glow -->
+    <rect x="30" y="0" width="4" height="64" fill="#F59E0B" opacity="0.18"/>
+
+    <!-- F letterform (black on amber) -->
+    <!-- F vertical stem -->
+    <rect x="7"  y="10" width="7" height="44" rx="2" fill="#000"/>
+    <!-- F top bar -->
+    <rect x="7"  y="10" width="19" height="7"  rx="2" fill="#000"/>
+    <!-- F mid bar -->
+    <rect x="7"  y="27" width="15" height="7"  rx="2" fill="#000"/>
+
+    <!-- I letterform (white on dark) -->
+    <!-- I top serif -->
+    <rect x="36" y="10" width="20" height="6"  rx="2" fill="#fff"/>
+    <!-- I stem -->
+    <rect x="43" y="16" width="6"  height="32" rx="2" fill="#fff"/>
+    <!-- I bottom serif -->
+    <rect x="36" y="48" width="20" height="6"  rx="2" fill="#fff"/>
+  </g>
+</svg>
