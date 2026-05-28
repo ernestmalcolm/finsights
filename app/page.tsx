@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Modal } from '@mantine/core';
+import { useMantineColorScheme } from '@mantine/core';
 import Logo from '@/components/Logo';
 import {
   IconChartBar, IconBuildingBank, IconBook2, IconWorld,
@@ -9,6 +10,7 @@ import {
   IconMail, IconBrandLinkedin, IconArrowRight, IconExternalLink,
   IconCheck, IconTrendingUp, IconLock, IconLockOpen,
   IconRocket, IconChartCandle, IconBriefcase, IconClock,
+  IconSun, IconMoon,
 } from '@tabler/icons-react';
 
 // ── Contact modal ────────────────────────────────────────────────────────────
@@ -230,6 +232,7 @@ function CompareRow({ them, us }: { them: string; us: string }) {
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   const [contactOpen, setContactOpen] = useState(false);
+  const { toggleColorScheme } = useMantineColorScheme();
 
   return (
     <div style={{ background: 'var(--bs-bg)', minHeight: '100vh', color: 'var(--bs-text)' }}>
@@ -244,7 +247,22 @@ export default function HomePage() {
         backdropFilter: 'blur(12px)',
       }}>
         <Logo size={30} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          {/* Theme toggle — same CSS-driven approach as dashboard TopBar */}
+          <button
+            onClick={() => toggleColorScheme()}
+            style={{
+              background: 'var(--bs-card)', border: '1px solid var(--bs-border)',
+              borderRadius: 8, color: 'var(--bs-text)', width: 36, height: 36,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', flexShrink: 0,
+            }}
+            title="Toggle theme"
+          >
+            <span className="theme-icon-sun"><IconSun size={15} /></span>
+            <span className="theme-icon-moon"><IconMoon size={15} /></span>
+          </button>
+
           <button
             className="fs-nav-contact"
             onClick={() => setContactOpen(true)}
