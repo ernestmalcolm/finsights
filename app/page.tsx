@@ -1,17 +1,29 @@
 'use client';
-import { useState } from 'react';
+
+import { useState, useCallback, type ElementType, type MouseEvent } from 'react';
 import Link from 'next/link';
-import { Modal } from '@mantine/core';
-import { useMantineColorScheme } from '@mantine/core';
+import { Modal, useMantineColorScheme } from '@mantine/core';
+import { motion } from 'framer-motion';
 import Logo from '@/components/Logo';
+import RotatingWords from '@/components/landing/RotatingWords';
+import HeroBento from '@/components/landing/HeroBento';
+import './landing.css';
 import {
   IconChartBar, IconBuildingBank, IconBook2, IconWorld,
   IconAlertTriangle, IconLayoutDashboard, IconBrandWhatsapp,
   IconMail, IconBrandLinkedin, IconArrowRight, IconExternalLink,
-  IconCheck, IconTrendingUp, IconLock, IconLockOpen,
-  IconRocket, IconChartCandle, IconBriefcase, IconClock,
-  IconSun, IconMoon, IconLogin,
+  IconTrendingUp, IconSun, IconMoon, IconLogin, IconRocket,
+  IconChartCandle, IconBriefcase, IconClock, IconChevronRight,
 } from '@tabler/icons-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 24 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] as const },
+  }),
+};
 
 // ── Contact modal ────────────────────────────────────────────────────────────
 function ContactModal({ opened, onClose }: { opened: boolean; onClose: () => void }) {
@@ -28,89 +40,68 @@ function ContactModal({ opened, onClose }: { opened: boolean; onClose: () => voi
         overlay: { backdropFilter: 'blur(6px)' },
       }}
     >
-      <div style={{ padding: '8px 4px 12px' }}>
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+      <div className="px-1 py-3">
+        <div className="text-center mb-6">
           <Logo size={32} />
-          <h2 style={{ margin: '16px 0 4px', fontSize: 20, fontWeight: 700, color: 'var(--bs-text)' }}>
-            Get in Touch
-          </h2>
-          <p style={{ margin: 0, fontSize: 13, color: 'var(--bs-muted)' }}>
-            Questions, data requests, or partnership inquiries
-          </p>
+          <h2 className="mt-4 mb-1 text-xl font-bold text-[var(--bs-text)]">Get in Touch</h2>
+          <p className="m-0 text-sm text-[var(--bs-muted)]">Data requests, partnerships, or analyst access</p>
         </div>
-
-        {/* Person card */}
-        <div style={{
-          background: 'var(--bs-surface)', border: '1px solid var(--bs-border)',
-          borderRadius: 12, padding: '16px', marginBottom: 20,
-          display: 'flex', alignItems: 'center', gap: 14,
-        }}>
-          <div style={{
-            width: 48, height: 48, borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--bs-amber), #F97316)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, fontSize: 18, fontWeight: 700, color: '#000',
-          }}>
+        <div className="flex items-center gap-3.5 p-4 rounded-xl border border-[var(--bs-border)] bg-[var(--bs-surface)] mb-5">
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center shrink-0 text-lg font-bold text-black"
+            style={{ background: 'linear-gradient(135deg, var(--bs-amber), #F97316)' }}
+          >
             E
           </div>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <p style={{ margin: 0, fontWeight: 700, fontSize: 15, color: 'var(--bs-text)' }}>
-              Eric-Alex Hamissi
-            </p>
-            <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--bs-muted)' }}>
-              FinSights · Tanzania
-            </p>
+          <div className="flex-1 min-w-0">
+            <p className="m-0 font-bold text-[var(--bs-text)]">Eric-Alex Hamissi</p>
+            <p className="m-0 mt-0.5 text-xs text-[var(--bs-muted)]">FinSights · Tanzania</p>
           </div>
           <a
             href="https://www.linkedin.com/in/eric-alex-hamissi-b0b02119b/"
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold no-underline shrink-0"
             style={{
-              display: 'flex', alignItems: 'center', gap: 5, padding: '6px 10px',
-              borderRadius: 7, background: 'rgba(14,165,233,0.12)',
-              border: '1px solid rgba(14,165,233,0.3)', color: 'var(--bs-teal)',
-              textDecoration: 'none', fontSize: 12, fontWeight: 600,
-              flexShrink: 0,
+              background: 'rgba(14,165,233,0.12)',
+              border: '1px solid rgba(14,165,233,0.3)',
+              color: 'var(--bs-teal)',
             }}
           >
-            <IconBrandLinkedin size={14} />
-            LinkedIn
+            <IconBrandLinkedin size={14} /> LinkedIn
           </a>
         </div>
-
-        {/* Contact buttons */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <div className="flex flex-col gap-2.5">
           <a
             href="https://wa.me/255748726803"
-            target="_blank" rel="noopener noreferrer"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 p-3.5 rounded-xl no-underline"
             style={{
-              display: 'flex', alignItems: 'center', gap: 12,
-              padding: '13px 16px', borderRadius: 10,
               background: 'rgba(37, 211, 102, 0.12)',
               border: '1px solid rgba(37, 211, 102, 0.3)',
-              textDecoration: 'none', color: '#25D366',
+              color: '#25D366',
             }}
           >
             <IconBrandWhatsapp size={20} />
             <div>
-              <p style={{ margin: 0, fontWeight: 600, fontSize: 13, color: '#25D366' }}>WhatsApp</p>
-              <p style={{ margin: 0, fontSize: 12, color: 'var(--bs-muted)', fontFamily: 'var(--font-ibm-mono)' }}>+255 748 726 803</p>
+              <p className="m-0 font-semibold text-sm">WhatsApp</p>
+              <p className="m-0 text-xs text-[var(--bs-muted)] num">+255 748 726 803</p>
             </div>
           </a>
-
           <a
             href="mailto:erichamissi1@gmail.com"
+            className="flex items-center gap-3 p-3.5 rounded-xl no-underline"
             style={{
-              display: 'flex', alignItems: 'center', gap: 12,
-              padding: '13px 16px', borderRadius: 10,
-              background: 'var(--bs-amber-dim)', border: '1px solid rgba(245,158,11,0.3)',
-              textDecoration: 'none', color: 'var(--bs-amber)',
+              background: 'var(--bs-amber-dim)',
+              border: '1px solid rgba(245,158,11,0.3)',
+              color: 'var(--bs-amber)',
             }}
           >
             <IconMail size={20} />
             <div>
-              <p style={{ margin: 0, fontWeight: 600, fontSize: 13, color: 'var(--bs-amber)' }}>Email</p>
-              <p style={{ margin: 0, fontSize: 12, color: 'var(--bs-muted)', fontFamily: 'var(--font-ibm-mono)' }}>erichamissi1@gmail.com</p>
+              <p className="m-0 font-semibold text-sm">Email</p>
+              <p className="m-0 text-xs text-[var(--bs-muted)] num">erichamissi1@gmail.com</p>
             </div>
           </a>
         </div>
@@ -119,470 +110,407 @@ function ContactModal({ opened, onClose }: { opened: boolean; onClose: () => voi
   );
 }
 
-// ── Stat card ────────────────────────────────────────────────────────────────
-function StatCard({ value, label }: { value: string; label: string }) {
+function BentoCard({
+  icon: Icon,
+  title,
+  desc,
+  href,
+  className = '',
+  tag,
+}: {
+  icon: ElementType;
+  title: string;
+  desc: string;
+  href: string;
+  className?: string;
+  tag?: string;
+}) {
   return (
-    <div style={{ textAlign: 'center', padding: '0 24px' }}>
-      <div className="num" style={{ fontSize: 36, fontWeight: 700, color: 'var(--bs-amber)', lineHeight: 1, letterSpacing: '-0.02em' }}>
-        {value}
-      </div>
-      <div style={{ fontSize: 12, color: 'var(--bs-muted)', marginTop: 6, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-        {label}
-      </div>
-    </div>
-  );
-}
-
-// ── Feature card ─────────────────────────────────────────────────────────────
-function FeatureCard({ icon: Icon, title, desc, href }: { icon: React.ElementType; title: string; desc: string; href: string }) {
-  return (
-    <Link href={href} style={{ textDecoration: 'none' }}>
-      <div style={{
-        background: 'var(--bs-card)', border: '1px solid var(--bs-border)',
-        borderRadius: 14, padding: '22px', cursor: 'pointer',
-        transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: 14,
-      }}
-        onMouseEnter={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = 'var(--bs-amber)';
-          (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)';
-        }}
-        onMouseLeave={e => {
-          (e.currentTarget as HTMLElement).style.borderColor = 'var(--bs-border)';
-          (e.currentTarget as HTMLElement).style.transform = 'translateY(0)';
-        }}
-      >
-        <div style={{
-          width: 40, height: 40, borderRadius: 10,
-          background: 'var(--bs-amber-dim)', border: '1px solid rgba(245,158,11,0.2)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          color: 'var(--bs-amber)',
-        }}>
-          <Icon size={20} />
+    <Link href={href} className={`no-underline ${className}`}>
+      <div className="landing-card landing-card-glow h-full p-5 flex flex-col gap-3">
+        <div className="flex items-start justify-between gap-2">
+          <div
+            className="w-10 h-10 rounded-[10px] flex items-center justify-center shrink-0"
+            style={{
+              background: 'var(--bs-amber-dim)',
+              border: '1px solid rgba(245,158,11,0.2)',
+              color: 'var(--bs-amber)',
+            }}
+          >
+            <Icon size={20} />
+          </div>
+          {tag && (
+            <span
+              className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full"
+              style={{ background: 'var(--bs-amber-dim)', color: 'var(--bs-amber)' }}
+            >
+              {tag}
+            </span>
+          )}
         </div>
-        <div>
-          <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 15, color: 'var(--bs-text)' }}>{title}</p>
-          <p style={{ margin: 0, fontSize: 13, color: 'var(--bs-muted)', lineHeight: 1.55 }}>{desc}</p>
+        <div className="flex-1">
+          <p className="m-0 mb-1.5 font-bold text-[15px] text-[var(--bs-text)]">{title}</p>
+          <p className="m-0 text-[13px] leading-relaxed text-[var(--bs-muted)]">{desc}</p>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, color: 'var(--bs-amber)', fontSize: 12, fontWeight: 600, marginTop: 'auto' }}>
-          Explore <IconArrowRight size={13} />
-        </div>
+        <span className="flex items-center gap-1 text-xs font-semibold" style={{ color: 'var(--bs-amber)' }}>
+          Open module <IconArrowRight size={13} />
+        </span>
       </div>
     </Link>
   );
 }
 
-// ── Coming soon card ─────────────────────────────────────────────────────────
-function ComingSoonCard({ icon: Icon, title, desc, eta }: { icon: React.ElementType; title: string; desc: string; eta?: string }) {
+function SoonCard({
+  icon: Icon,
+  title,
+  desc,
+  className = '',
+}: {
+  icon: ElementType;
+  title: string;
+  desc: string;
+  className?: string;
+}) {
   return (
-    <div style={{
-      background: 'var(--bs-card)', border: '1px dashed var(--bs-border)',
-      borderRadius: 14, padding: '22px', display: 'flex', flexDirection: 'column', gap: 14,
-      opacity: 0.75, position: 'relative', overflow: 'hidden',
-    }}>
-      {/* Coming soon ribbon */}
-      <div style={{
-        position: 'absolute', top: 14, right: -22,
-        background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)',
-        color: '#a78bfa', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
-        padding: '3px 32px', transform: 'rotate(40deg)', textTransform: 'uppercase',
-      }}>
-        Soon
+    <div
+      className={`landing-card h-full p-5 flex flex-col gap-3 opacity-80 ${className}`}
+      style={{ borderStyle: 'dashed' }}
+    >
+      <div className="flex items-center justify-between">
+        <div
+          className="w-10 h-10 rounded-[10px] flex items-center justify-center"
+          style={{
+            background: 'color-mix(in srgb, var(--bs-muted) 12%, transparent)',
+            border: '1px solid var(--bs-border)',
+            color: 'var(--bs-muted)',
+          }}
+        >
+          <Icon size={20} />
+        </div>
+        <span className="text-[10px] font-bold uppercase tracking-wider text-[var(--bs-muted)] flex items-center gap-1">
+          <IconClock size={11} /> Soon
+        </span>
       </div>
-      <div style={{
-        width: 40, height: 40, borderRadius: 10,
-        background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.15)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: '#a78bfa',
-      }}>
-        <Icon size={20} />
-      </div>
-      <div>
-        <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 15, color: 'var(--bs-text)' }}>{title}</p>
-        <p style={{ margin: 0, fontSize: 13, color: 'var(--bs-muted)', lineHeight: 1.55 }}>{desc}</p>
-      </div>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#a78bfa', fontSize: 12, fontWeight: 600, marginTop: 'auto' }}>
-        <IconClock size={12} /> {eta ?? 'Coming soon'}
+      <div className="flex-1">
+        <p className="m-0 mb-1.5 font-bold text-[15px] text-[var(--bs-text)]">{title}</p>
+        <p className="m-0 text-[13px] leading-relaxed text-[var(--bs-muted)]">{desc}</p>
       </div>
     </div>
   );
 }
 
-// ── Compare row ──────────────────────────────────────────────────────────────
-function CompareRow({ them, us }: { them: string; us: string }) {
-  return (
-    <div className="fs-compare-row" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px',
-        borderRadius: 10, background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)',
-      }}>
-        <IconLock size={14} style={{ color: 'var(--bs-red)', flexShrink: 0 }} />
-        <span style={{ fontSize: 13, color: 'var(--bs-muted)' }}>{them}</span>
-      </div>
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px',
-        borderRadius: 10, background: 'var(--bs-amber-dim)', border: '1px solid rgba(245,158,11,0.2)',
-      }}>
-        <IconCheck size={14} style={{ color: 'var(--bs-amber)', flexShrink: 0 }} />
-        <span style={{ fontSize: 13, color: 'var(--bs-text)', fontWeight: 500 }}>{us}</span>
-      </div>
-    </div>
-  );
-}
-
-// ── Page ─────────────────────────────────────────────────────────────────────
 export default function HomePage() {
   const [contactOpen, setContactOpen] = useState(false);
   const { toggleColorScheme } = useMantineColorScheme();
 
+  const onHeroMove = useCallback((e: MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    e.currentTarget.style.setProperty('--spot-x', `${x}%`);
+    e.currentTarget.style.setProperty('--spot-y', `${y}%`);
+  }, []);
+
   return (
-    <div style={{ background: 'var(--bs-bg)', minHeight: '100vh', color: 'var(--bs-text)' }}>
+    <div className="landing-page min-h-screen overflow-x-hidden text-[var(--bs-text)]" style={{ background: 'var(--bs-bg)' }}>
       <ContactModal opened={contactOpen} onClose={() => setContactOpen(false)} />
 
-      {/* ── Navbar ── */}
-      <nav className="fs-nav" style={{
-        position: 'sticky', top: 0, zIndex: 100,
-        background: 'var(--bs-surface)', borderBottom: '1px solid var(--bs-border)',
-        padding: '0 32px', height: 64,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        backdropFilter: 'blur(12px)',
-      }}>
+      {/* Nav */}
+      <nav className="landing-nav-blur sticky top-0 z-[100] h-16 px-6 md:px-8 flex items-center justify-between border-b border-[var(--bs-border)]">
         <Logo size={30} />
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          {/* Theme toggle — same CSS-driven approach as dashboard TopBar */}
+        <div className="flex items-center gap-2.5">
           <button
+            type="button"
             onClick={() => toggleColorScheme()}
-            style={{
-              background: 'var(--bs-card)', border: '1px solid var(--bs-border)',
-              borderRadius: 8, color: 'var(--bs-text)', width: 36, height: 36,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer', flexShrink: 0,
-            }}
+            className="w-9 h-9 rounded-lg flex items-center justify-center cursor-pointer border border-[var(--bs-border)] bg-[var(--bs-card)] text-[var(--bs-text)]"
             title="Toggle theme"
           >
             <span className="theme-icon-sun"><IconSun size={15} /></span>
             <span className="theme-icon-moon"><IconMoon size={15} /></span>
           </button>
-
           <button
-            className="fs-nav-contact"
+            type="button"
             onClick={() => setContactOpen(true)}
-            style={{
-              background: 'transparent', border: '1px solid var(--bs-border)',
-              borderRadius: 8, color: 'var(--bs-muted)', padding: '7px 16px',
-              fontSize: 13, cursor: 'pointer', fontFamily: 'var(--font-sora)',
-            }}
+            className="hidden sm:block px-4 py-1.5 rounded-lg text-[13px] cursor-pointer border border-[var(--bs-border)] text-[var(--bs-muted)] bg-transparent"
+            style={{ fontFamily: 'var(--font-sora)' }}
           >
             Contact
           </button>
           <Link href="/login">
-            <button style={{
-              background: 'var(--bs-amber)', border: 'none', borderRadius: 8,
-              color: '#000', padding: '8px 18px', fontSize: 13, fontWeight: 700,
-              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
-              fontFamily: 'var(--font-sora)',
-            }}>
-              <span className="fs-nav-btn-text">Sign In</span>
-              <span style={{ display: 'none' }} className="fs-nav-btn-icon">Login</span>
+            <button
+              type="button"
+              className="flex items-center gap-1.5 px-4 py-2 rounded-lg text-[13px] font-bold cursor-pointer border-0 text-black"
+              style={{ background: 'var(--bs-amber)', fontFamily: 'var(--font-sora)' }}
+            >
+              <span className="hidden xs:inline">Sign In</span>
               <IconLogin size={14} />
             </button>
           </Link>
         </div>
       </nav>
 
-      {/* ── Hero ── */}
-      <section className="fs-hero" style={{
-        position: 'relative', overflow: 'hidden',
-        padding: '100px 32px 80px',
-        background: `
-          radial-gradient(ellipse 80% 60% at 10% 10%, rgba(245,158,11,0.08) 0%, transparent 60%),
-          radial-gradient(ellipse 60% 50% at 90% 90%, rgba(14,165,233,0.06) 0%, transparent 60%)
-        `,
-      }}>
-        {/* Dot grid background */}
-        <div style={{
-          position: 'absolute', inset: 0, zIndex: 0,
-          backgroundImage: 'radial-gradient(var(--bs-border) 1px, transparent 1px)',
-          backgroundSize: '28px 28px', opacity: 0.6,
-        }} />
+      {/* Hero */}
+      <section
+        className="landing-hero-section relative overflow-hidden px-6 md:px-8 landing-grain"
+        onMouseMove={onHeroMove}
+        style={{
+          background: `
+            radial-gradient(ellipse 70% 50% at 20% 0%, rgba(245,158,11,0.09) 0%, transparent 55%),
+            radial-gradient(ellipse 50% 40% at 90% 80%, rgba(14,165,233,0.05) 0%, transparent 50%),
+            var(--bs-bg)
+          `,
+        }}
+      >
+        <div className="landing-spotlight" aria-hidden />
+        <div className="relative z-[2] landing-hero-grid">
+          <div className="landing-hero-copy text-center lg:text-left">
+            <motion.h1
+              custom={0}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="landing-hero-title landing-display m-0 text-[var(--bs-text)]"
+            >
+              <span className="landing-hero-lead">
+                Tanzania&apos;s <RotatingWords />
+              </span>
+              <br />
+              <span className="landing-hero-tagline italic text-[var(--bs-muted)]">
+                — one platform to learn it.
+              </span>
+            </motion.h1>
 
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: 820, margin: '0 auto', textAlign: 'center' }}>
-          {/* Eyebrow */}
-          <div className="fs-eyebrow" style={{
-            display: 'inline-flex', alignItems: 'center', gap: 8,
-            background: 'var(--bs-amber-dim)', border: '1px solid rgba(245,158,11,0.3)',
-            borderRadius: 100, padding: '5px 14px', marginBottom: 32,
-            flexWrap: 'wrap', justifyContent: 'center',
-          }}>
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--bs-amber)', animation: 'pulse 2s infinite' }} />
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--bs-amber)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-              Tanzania Financial Sector · Banking · Startups · Investments · Stocks
-            </span>
+            <motion.p
+              custom={1}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="landing-hero-desc m-0 max-w-[540px] leading-relaxed text-[var(--bs-muted)] mx-auto lg:mx-0"
+            >
+              Built for analysts and finance enthusiasts who want clarity, not PDF archaeology.
+              Compare banks, track NPLs, and read macro context — with more sectors on the way.
+            </motion.p>
+
+            <motion.div
+              custom={2}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="landing-cta-row flex flex-wrap gap-3 justify-center lg:justify-start"
+            >
+              <Link href="/login">
+                <button
+                  type="button"
+                  className="flex items-center gap-2 px-7 py-3.5 rounded-[10px] text-[15px] font-bold cursor-pointer border-0 text-black"
+                  style={{ background: 'var(--bs-amber)', fontFamily: 'var(--font-sora)' }}
+                >
+                  <IconLayoutDashboard size={18} /> Explore Dashboard
+                </button>
+              </Link>
+              <button
+                type="button"
+                onClick={() => setContactOpen(true)}
+                className="px-7 py-3.5 rounded-[10px] text-[15px] font-semibold cursor-pointer border border-[var(--bs-border)] bg-transparent text-[var(--bs-text)]"
+                style={{ fontFamily: 'var(--font-sora)' }}
+              >
+                Contact
+              </button>
+            </motion.div>
           </div>
 
-          {/* Headline */}
-          <h1 className="fs-hero-h1" style={{
-            margin: '0 0 24px', fontWeight: 800, lineHeight: 1.1,
-            fontSize: 'clamp(36px, 6vw, 66px)',
-            letterSpacing: '-0.03em', color: 'var(--bs-text)',
-          }}>
-            Tanzania&apos;s banking sector.{' '}
-            <span style={{
-              background: 'linear-gradient(135deg, #F59E0B 0%, #FCD34D 45%, #F97316 100%)',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}>
-              Decoded.
-            </span>
-          </h1>
+          <HeroBento />
+        </div>
+      </section>
 
-          <p style={{
-            margin: '0 auto 40px', maxWidth: 600, fontSize: 'clamp(15px, 2vw, 18px)',
-            color: 'var(--bs-muted)', lineHeight: 1.65,
-          }}>
-            Starting with Tanzania&apos;s banking sector — P&amp;L, NPLs, macro trends and
-            KPIs across 10 major banks. Expanding soon to startups, investment funds,
-            and DSE-listed stocks.
+      {/* Modules bento */}
+      <section className="px-6 md:px-8 py-16 md:py-24 max-w-[1100px] mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.5 }}
+          className="mb-12 md:mb-14"
+        >
+          <p className="m-0 mb-3 text-xs font-bold uppercase tracking-[0.12em] text-[var(--bs-amber)]">
+            Platform modules
           </p>
+          <h2 className="landing-display m-0 text-[clamp(1.75rem,4vw,2.5rem)] font-normal text-[var(--bs-text)]">
+            Six live dashboards. More loading in.
+          </h2>
+          <p className="mt-4 mb-0 max-w-[520px] text-[15px] text-[var(--bs-muted)] leading-relaxed">
+            Each module is built around how analysts actually work — filters, ratios, and trends
+            you can drill into, not static tables.
+          </p>
+        </motion.div>
 
-          {/* CTAs */}
-          <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+        <p className="m-0 mb-3 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--bs-amber)]">
+          Banking · Live
+        </p>
+        <div className="landing-bento mb-10">
+          <BentoCard
+            className="landing-bento-feature landing-bento-feature--hero"
+            href="/overview"
+            icon={IconLayoutDashboard}
+            title="Sector Overview"
+            desc="Sector KPIs, asset growth, market share, and macro snapshot — your entry point before drilling into any bank."
+            tag="Start here"
+          />
+          <BentoCard
+            className="landing-bento-feature landing-bento-feature--std"
+            href="/banks"
+            icon={IconBuildingBank}
+            title="Bank Comparison"
+            desc="Side-by-side metrics for all 10 institutions."
+          />
+          <BentoCard
+            className="landing-bento-feature landing-bento-feature--std"
+            href="/pnl"
+            icon={IconChartBar}
+            title="Profit & Loss"
+            desc="Revenue, costs, NIM, and net income."
+          />
+          <BentoCard
+            className="landing-bento-feature landing-bento-feature--std"
+            href="/balance-sheet"
+            icon={IconBook2}
+            title="Balance Sheet"
+            desc="Composition, LDR, and 8-year structure."
+          />
+          <BentoCard
+            className="landing-bento-feature landing-bento-feature--std"
+            href="/macro"
+            icon={IconWorld}
+            title="Macro Indicators"
+            desc="GDP, inflation, FX, and policy rates."
+          />
+          <BentoCard
+            className="landing-bento-feature landing-bento-feature--std"
+            href="/risk"
+            icon={IconAlertTriangle}
+            title="Credit & Risk"
+            desc="NPL ratios, provisions, and risk tiers."
+          />
+        </div>
+
+        <p className="m-0 mb-3 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--bs-muted)]">
+          Roadmap
+        </p>
+        <div className="grid gap-3.5 sm:grid-cols-3">
+          <SoonCard icon={IconRocket} title="Startups & SMEs" desc="Funding, growth, and sector breakdown for Tanzania's startup ecosystem." />
+          <SoonCard icon={IconBriefcase} title="Investment Funds" desc="Unit trusts, pensions, and portfolio performance." />
+          <SoonCard icon={IconChartCandle} title="DSE Stocks & Bonds" desc="Listed company financials and auction results from the DSE." />
+        </div>
+      </section>
+
+      {/* Why — institutional compare */}
+      <section className="px-6 md:px-8 py-16 md:py-24 border-t border-[var(--bs-border)] bg-[var(--bs-surface)]">
+        <div className="max-w-[720px] mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-10"
+          >
+            <p className="m-0 mb-3 text-xs font-bold uppercase tracking-[0.12em] text-[var(--bs-amber)]">
+              Why FinSights
+            </p>
+            <h2 className="landing-display m-0 text-[clamp(1.6rem,3.5vw,2.25rem)]">
+              The data exists. The friction shouldn&apos;t.
+            </h2>
+            <p className="mt-4 mb-0 text-[15px] text-[var(--bs-muted)] leading-relaxed">
+              Annual reports scattered across ten sites, buried in PDFs. FinSights consolidates
+              and visualises what analysts need to compare and learn faster.
+            </p>
+          </motion.div>
+
+          <div className="landing-compare-table landing-compare-header">
+            <div
+              className="grid grid-cols-2 text-[10px] font-bold uppercase tracking-[0.08em] py-3 px-4 border-b border-[var(--bs-border)]"
+              style={{ background: 'var(--bs-card)' }}
+            >
+              <span className="text-[var(--bs-muted)]">Status quo</span>
+              <span style={{ color: 'var(--bs-amber)' }}>FinSights</span>
+            </div>
+            {[
+              ['Static PDFs and annual reports', 'Interactive charts with filters'],
+              ['Outdated charts, no benchmarks', 'Sector KPIs and peer comparison'],
+              ['Data on 10 separate websites', 'All institutions in one workspace'],
+              ['Hours of manual spreadsheet work', '2017–2024 trends in seconds'],
+            ].map(([bad, good]) => (
+              <div key={bad} className="landing-compare-row">
+                <div className="px-4 py-3.5 text-[13px] text-[var(--bs-muted)] border-r border-[var(--bs-border)] max-sm:border-r-0 max-sm:border-b max-sm:border-[var(--bs-border)]">
+                  {bad}
+                </div>
+                <div className="px-4 py-3.5 text-[13px] font-medium text-[var(--bs-text)] flex items-center gap-2">
+                  <IconChevronRight size={14} style={{ color: 'var(--bs-amber)', flexShrink: 0 }} />
+                  {good}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="px-6 md:px-8 py-20 md:py-28 text-center">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="landing-display m-0 mb-4 text-[clamp(1.75rem,4vw,2.75rem)]">
+            Start learning the sector today.
+          </h2>
+          <p className="m-0 mx-auto mb-9 max-w-[480px] text-[15px] text-[var(--bs-muted)] leading-relaxed">
+            Free to explore. Built for people who care about Tanzania&apos;s financial system —
+            from banking today to startups and markets tomorrow.
+          </p>
+          <div className="flex flex-wrap gap-3 justify-center">
             <Link href="/login">
-              <button style={{
-                background: 'var(--bs-amber)', border: 'none', borderRadius: 10,
-                color: '#000', padding: '14px 28px', fontSize: 15, fontWeight: 700,
-                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-                fontFamily: 'var(--font-sora)',
-              }}>
-                <IconLayoutDashboard size={18} /> View Dashboard
+              <button
+                type="button"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[10px] text-[15px] font-bold cursor-pointer border-0 text-black"
+                style={{ background: 'var(--bs-amber)', fontFamily: 'var(--font-sora)' }}
+              >
+                <IconTrendingUp size={18} /> Open Dashboard
               </button>
             </Link>
             <button
+              type="button"
               onClick={() => setContactOpen(true)}
-              style={{
-                background: 'transparent', border: '1px solid var(--bs-border)',
-                borderRadius: 10, color: 'var(--bs-text)', padding: '14px 28px',
-                fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sora)',
-              }}
+              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-[10px] text-[15px] font-semibold cursor-pointer border border-[var(--bs-border)] bg-transparent text-[var(--bs-text)]"
+              style={{ fontFamily: 'var(--font-sora)' }}
             >
-              Contact Us
+              <IconMail size={16} /> Contact
             </button>
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* ── Stats strip ── */}
-      <section className="fs-stats" style={{
-        borderTop: '1px solid var(--bs-border)', borderBottom: '1px solid var(--bs-border)',
-        padding: '40px 32px', background: 'var(--bs-surface)',
-      }}>
-        <div style={{
-          maxWidth: 860, margin: '0 auto',
-          display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-          gap: 24,
-        }}>
-          <StatCard value="10+"     label="Banks Covered" />
-          <StatCard value="8"       label="Years of Data" />
-          <StatCard value="6"       label="Live Modules" />
-          <StatCard value="TZS 28T+" label="Assets Tracked" />
-          <StatCard value="4+"      label="Sectors Planned" />
-        </div>
-      </section>
-
-      {/* ── Features ── */}
-      <section className="fs-section" style={{ padding: '80px 32px', maxWidth: 1080, margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: 52 }}>
-          <p style={{ margin: '0 0 12px', fontSize: 12, color: 'var(--bs-amber)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-            What&apos;s Inside
-          </p>
-          <h2 style={{ margin: '0 0 16px', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--bs-text)' }}>
-            Six modules live. More on the way.
-          </h2>
-          <div style={{
-            display: 'inline-flex', alignItems: 'center', gap: 7,
-            background: 'rgba(139,92,246,0.1)', border: '1px solid rgba(139,92,246,0.3)',
-            borderRadius: 100, padding: '5px 14px',
-          }}>
-            <span style={{ fontSize: 13 }}>✦</span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#a78bfa', letterSpacing: '0.04em' }}>
-              AI-powered analysis layer — coming soon
-            </span>
-          </div>
-        </div>
-        {/* Live modules */}
-        <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: 'var(--bs-amber)', textTransform: 'uppercase', letterSpacing: '0.09em' }}>
-          Live now — Banking Sector
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 32 }}>
-          <FeatureCard href="/overview"      icon={IconLayoutDashboard} title="Sector Overview"    desc="High-level KPIs, asset growth trend, market share and macro snapshot across the full sector." />
-          <FeatureCard href="/banks"         icon={IconBuildingBank}    title="Bank Comparison"    desc="Side-by-side metrics for all 10 banks — assets, deposits, loans, NPL ratios, ROA and YoY growth." />
-          <FeatureCard href="/balance-sheet" icon={IconBook2}           title="Balance Sheet"      desc="Asset and liability composition, loans-to-deposits ratios, and structural trends over 8 years." />
-          <FeatureCard href="/pnl"           icon={IconChartBar}        title="Profit & Loss"      desc="Revenue breakdown, operating costs, cost-to-income ratios, NIM and net income by bank." />
-          <FeatureCard href="/macro"         icon={IconWorld}           title="Macro Indicators"   desc="GDP growth, inflation, exchange rate, lending and deposit rates — Tanzania's economic backdrop." />
-          <FeatureCard href="/risk"          icon={IconAlertTriangle}   title="Credit & Risk"      desc="NPL ratios, provision coverage and risk tier classification across every institution." />
-        </div>
-
-        {/* Roadmap */}
-        <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '0.09em' }}>
-          Expanding soon
-        </p>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
-          <ComingSoonCard icon={IconRocket}      title="Startups & SMEs"     eta="Coming soon" desc="Funding rounds, growth metrics and sector breakdown for Tanzania's emerging startup ecosystem." />
-          <ComingSoonCard icon={IconBriefcase}   title="Investment Funds"    eta="Coming soon" desc="Unit trusts, pension fund allocations, and investment portfolio performance across fund managers." />
-          <ComingSoonCard icon={IconChartCandle} title="DSE Stocks & Bonds"  eta="Coming soon" desc="Listed company financials, price trends, T-bill and T-bond auction results from the Dar es Salaam Stock Exchange." />
-        </div>
-      </section>
-
-      {/* ── Why FinSights ── */}
-      <section className="fs-surface" style={{
-        padding: '80px 32px',
-        background: 'var(--bs-surface)',
-        borderTop: '1px solid var(--bs-border)',
-      }}>
-        <div style={{ maxWidth: 760, margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: 48 }}>
-            <p style={{ margin: '0 0 12px', fontSize: 12, color: 'var(--bs-amber)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-              The Gap We Fill
-            </p>
-            <h2 style={{ margin: '0 0 14px', fontSize: 'clamp(22px, 4vw, 34px)', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--bs-text)' }}>
-              Why FinSights exists
-            </h2>
-            <p style={{ margin: 0, fontSize: 15, color: 'var(--bs-muted)', lineHeight: 1.6, maxWidth: 520, marginInline: 'auto' }}>
-              Tanzania&apos;s banking data exists — but it&apos;s buried in PDFs, split across 10 institution websites,
-              and presented in formats that demand hours of manual work. FinSights consolidates and visualises it all.
-            </p>
-          </div>
-
-          {/* Column headers */}
-          <div className="fs-compare-headers" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 10 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 16 }}>
-              <IconLock size={13} style={{ color: 'var(--bs-red)' }} />
-              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--bs-muted)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>The status quo</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, paddingLeft: 16 }}>
-              <IconLockOpen size={13} style={{ color: 'var(--bs-amber)' }} />
-              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--bs-amber)', textTransform: 'uppercase', letterSpacing: '0.07em' }}>FinSights</span>
-            </div>
-          </div>
-
-          <div className="fs-compare-grid" style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <CompareRow them="Static PDFs and annual reports"    us="Live interactive charts & dynamic filters" />
-            <CompareRow them="Outdated, hard-to-read charts"     us="Modern visualisations built for clarity" />
-            <CompareRow them="Data scattered across 10 websites" us="All 10 banks consolidated in one place" />
-            <CompareRow them="Generic tables with no context"    us="Sector-specific KPIs, ratios & benchmarks" />
-            <CompareRow them="No intelligent analysis layer"     us="AI-powered analysis — coming soon ✦" />
-          </div>
-        </div>
-      </section>
-
-      {/* ── CTA Banner ── */}
-      <section className="fs-cta" style={{
-        padding: '80px 32px', textAlign: 'center',
-        background: `
-          radial-gradient(ellipse 100% 100% at 50% 50%, rgba(245,158,11,0.07) 0%, transparent 70%)
-        `,
-      }}>
-        <h2 style={{ margin: '0 0 16px', fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--bs-text)' }}>
-          Ready to decode Tanzania&apos;s banking sector?
-        </h2>
-        <p style={{ margin: '0 auto 36px', maxWidth: 500, fontSize: 15, color: 'var(--bs-muted)', lineHeight: 1.6 }}>
-          Start with banking — then watch FinSights grow into Tanzania&apos;s most
-          comprehensive financial intelligence platform, covering banks, startups,
-          investments, and stocks.
-        </p>
-        <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/login">
-            <button style={{
-              background: 'var(--bs-amber)', border: 'none', borderRadius: 10,
-              color: '#000', padding: '14px 30px', fontSize: 15, fontWeight: 700,
-              cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8,
-              fontFamily: 'var(--font-sora)',
-            }}>
-              <IconTrendingUp size={18} /> Explore Dashboard
-            </button>
-          </Link>
-          <button
-            onClick={() => setContactOpen(true)}
-            style={{
-              background: 'transparent', border: '1px solid var(--bs-border)',
-              borderRadius: 10, color: 'var(--bs-text)', padding: '14px 30px',
-              fontSize: 15, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sora)',
-              display: 'flex', alignItems: 'center', gap: 8,
-            }}
-          >
-            <IconMail size={16} /> Get in Touch
-          </button>
-        </div>
-      </section>
-
-      {/* ── Footer ── */}
-      <footer className="fs-footer" style={{
-        borderTop: '1px solid var(--bs-border)', background: 'var(--bs-surface)',
-        padding: '32px 32px', display: 'flex', alignItems: 'center',
-        justifyContent: 'space-between', flexWrap: 'wrap', gap: 16,
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+      {/* Footer */}
+      <footer className="px-6 md:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[var(--bs-border)] bg-[var(--bs-surface)]">
+        <div className="flex items-center gap-5 flex-wrap justify-center sm:justify-start">
           <Logo size={24} />
-          <span style={{ fontSize: 12, color: 'var(--bs-muted)' }}>
+          <span className="text-xs text-[var(--bs-muted)]">
             © {new Date().getFullYear()} FinSights · Tanzania Banking Intelligence
           </span>
         </div>
-
-        <div className="fs-footer-links" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <div className="flex items-center gap-4 flex-wrap justify-center">
           <a
             href="https://www.linkedin.com/in/eric-alex-hamissi-b0b02119b/"
-            target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', gap: 6, color: 'var(--bs-muted)', textDecoration: 'none', fontSize: 13 }}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[13px] text-[var(--bs-muted)] no-underline"
           >
             <IconBrandLinkedin size={16} /> Eric-Alex Hamissi
           </a>
-          <button
-            onClick={() => setContactOpen(true)}
-            style={{
-              background: 'var(--bs-amber-dim)', border: '1px solid rgba(245,158,11,0.25)',
-              borderRadius: 7, color: 'var(--bs-amber)', padding: '6px 14px',
-              fontSize: 12, fontWeight: 600, cursor: 'pointer', fontFamily: 'var(--font-sora)',
-            }}
-          >
-            Contact
-          </button>
-          <Link href="/login" style={{
-            display: 'flex', alignItems: 'center', gap: 5,
-            color: 'var(--bs-muted)', textDecoration: 'none', fontSize: 13,
-          }}>
+          <Link href="/login" className="flex items-center gap-1 text-[13px] text-[var(--bs-muted)] no-underline">
             Dashboard <IconExternalLink size={13} />
           </Link>
         </div>
       </footer>
 
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.4; }
-        }
-
-        /* ── Responsive homepage ── */
-        @media (max-width: 640px) {
-          .fs-nav         { padding: 0 16px !important; }
-          .fs-nav-contact { display: none !important; }
-          .fs-hero        { padding: 60px 20px 48px !important; }
-          .fs-eyebrow     { padding: 4px 10px !important; }
-          .fs-eyebrow span { font-size: 10px !important; letter-spacing: 0.04em !important; white-space: normal !important; text-align: center; }
-          .fs-stats       { padding: 28px 16px !important; }
-          .fs-section     { padding: 52px 20px !important; max-width: 100% !important; }
-          .fs-surface     { padding: 52px 20px !important; }
-          .fs-cta         { padding: 56px 20px !important; }
-          .fs-compare-row { grid-template-columns: 1fr !important; }
-          .fs-compare-headers { display: none !important; }
-          .fs-footer      { flex-direction: column !important; gap: 20px !important; padding: 24px 20px !important; }
-          .fs-footer-links { flex-wrap: wrap !important; gap: 12px !important; }
-          .fs-nav-btn-text { display: none !important; }
-          .fs-nav-btn-icon { display: inline !important; }
-        }
-
-        @media (max-width: 480px) {
-          .fs-hero-h1 { font-size: 34px !important; }
-        }
-      `}</style>
     </div>
   );
 }

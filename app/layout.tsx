@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Sora, IBM_Plex_Mono } from 'next/font/google';
+import { Sora, IBM_Plex_Mono, Instrument_Serif } from 'next/font/google';
 import { ColorSchemeScript, MantineProvider, createTheme } from '@mantine/core';
 import '@mantine/core/styles.css';
 import './globals.css';
@@ -14,6 +14,14 @@ const ibmMono = IBM_Plex_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   variable: '--font-ibm-mono',
+  display: 'swap',
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-display',
   display: 'swap',
 });
 
@@ -85,7 +93,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={`${sora.variable} ${ibmMono.variable}`} suppressHydrationWarning>
+      <body className={`${sora.variable} ${ibmMono.variable} ${instrumentSerif.variable}`} suppressHydrationWarning>
         {/*
           ColorSchemeScript must be the FIRST child of <body> so it runs before
           React hydrates and prevents color-scheme flash. Placing it in <head>
