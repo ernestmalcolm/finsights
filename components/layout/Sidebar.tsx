@@ -51,11 +51,11 @@ export default function Sidebar({ collapsed, isMobile = false, onToggle }: Props
             width: 32, height: 32, borderRadius: 8, background: 'var(--bs-amber)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           }}>
-            <span style={{ color: '#000', fontWeight: 800, fontSize: 14 }}>B</span>
+            <span style={{ color: '#000', fontWeight: 800, fontSize: 14 }}>F</span>
           </div>
           {(isMobile || !collapsed) && (
             <span style={{ fontWeight: 700, fontSize: 16, color: 'var(--bs-text)', letterSpacing: '-0.02em', whiteSpace: 'nowrap' }}>
-              Bank<span style={{ color: 'var(--bs-amber)' }}>Sphere</span>
+              Fin<span style={{ color: 'var(--bs-amber)' }}>Sights</span>
             </span>
           )}
         </div>

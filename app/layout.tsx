@@ -36,8 +36,8 @@ const theme = createTheme({
 });
 
 export const metadata: Metadata = {
-  title: 'BankSphere — Tanzania Banking Intelligence',
-  description: 'Comprehensive analysis of Tanzania\'s banking sector (2017–2024)',
+  title: 'FinSights — Tanzania Banking Intelligence',
+  description: 'Open, interactive financial analytics for Tanzania\'s banking sector. Track assets, P&L, NPLs and macro trends across 10 major banks — 2017 to 2024.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

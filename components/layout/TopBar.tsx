@@ -48,7 +48,7 @@ export default function TopBar({ collapsed, onToggle }: Props) {
         }}
           className="topbar-sub"
         >
-          Tanzania Banking Sector · Data 2017–2024
+          FinSights · Tanzania Banking · 2017–2024
         </p>
       </div>
 
