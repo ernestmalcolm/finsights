@@ -7,6 +7,7 @@ import {
   IconAlertTriangle, IconLayoutDashboard, IconBrandWhatsapp,
   IconMail, IconBrandLinkedin, IconArrowRight, IconExternalLink,
   IconCheck, IconTrendingUp, IconLock, IconLockOpen,
+  IconRocket, IconChartCandle, IconBriefcase, IconClock,
 } from '@tabler/icons-react';
 
 // ── Brand mark ──────────────────────────────────────────────────────────────
@@ -184,6 +185,42 @@ function FeatureCard({ icon: Icon, title, desc, href }: { icon: React.ElementTyp
   );
 }
 
+// ── Coming soon card ─────────────────────────────────────────────────────────
+function ComingSoonCard({ icon: Icon, title, desc, eta }: { icon: React.ElementType; title: string; desc: string; eta?: string }) {
+  return (
+    <div style={{
+      background: 'var(--bs-card)', border: '1px dashed var(--bs-border)',
+      borderRadius: 14, padding: '22px', display: 'flex', flexDirection: 'column', gap: 14,
+      opacity: 0.75, position: 'relative', overflow: 'hidden',
+    }}>
+      {/* Coming soon ribbon */}
+      <div style={{
+        position: 'absolute', top: 14, right: -22,
+        background: 'rgba(139,92,246,0.15)', border: '1px solid rgba(139,92,246,0.3)',
+        color: '#a78bfa', fontSize: 10, fontWeight: 700, letterSpacing: '0.06em',
+        padding: '3px 32px', transform: 'rotate(40deg)', textTransform: 'uppercase',
+      }}>
+        Soon
+      </div>
+      <div style={{
+        width: 40, height: 40, borderRadius: 10,
+        background: 'rgba(139,92,246,0.08)', border: '1px solid rgba(139,92,246,0.15)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        color: '#a78bfa',
+      }}>
+        <Icon size={20} />
+      </div>
+      <div>
+        <p style={{ margin: '0 0 6px', fontWeight: 700, fontSize: 15, color: 'var(--bs-text)' }}>{title}</p>
+        <p style={{ margin: 0, fontSize: 13, color: 'var(--bs-muted)', lineHeight: 1.55 }}>{desc}</p>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5, color: '#a78bfa', fontSize: 12, fontWeight: 600, marginTop: 'auto' }}>
+        <IconClock size={12} /> {eta ?? 'Coming soon'}
+      </div>
+    </div>
+  );
+}
+
 // ── Compare row ──────────────────────────────────────────────────────────────
 function CompareRow({ them, us }: { them: string; us: string }) {
   return (
@@ -272,7 +309,7 @@ export default function HomePage() {
           }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--bs-amber)', animation: 'pulse 2s infinite' }} />
             <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--bs-amber)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-              Tanzania Banking Sector · 2017 – 2024
+              Tanzania Financial Sector · Banking · Startups · Investments · Stocks
             </span>
           </div>
 
@@ -293,11 +330,12 @@ export default function HomePage() {
           </h1>
 
           <p style={{
-            margin: '0 auto 40px', maxWidth: 580, fontSize: 'clamp(15px, 2vw, 18px)',
+            margin: '0 auto 40px', maxWidth: 600, fontSize: 'clamp(15px, 2vw, 18px)',
             color: 'var(--bs-muted)', lineHeight: 1.65,
           }}>
-            Sector KPIs, P&amp;L breakdowns, NPL trends and macro context across all 10 major
-            Tanzanian banks — structured for analysts, accessible to all.
+            Starting with Tanzania&apos;s banking sector — P&amp;L, NPLs, macro trends and
+            KPIs across 10 major banks. Expanding soon to startups, investment funds,
+            and DSE-listed stocks.
           </p>
 
           {/* CTAs */}
@@ -336,11 +374,11 @@ export default function HomePage() {
           display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
           gap: 24,
         }}>
-          <StatCard value="10"      label="Banks Covered" />
+          <StatCard value="10+"     label="Banks Covered" />
           <StatCard value="8"       label="Years of Data" />
-          <StatCard value="6"       label="Analysis Modules" />
-          <StatCard value="TZS 28T+" label="Sector Assets" />
-          <StatCard value="100%"    label="Open Access" />
+          <StatCard value="6"       label="Live Modules" />
+          <StatCard value="TZS 28T+" label="Assets Tracked" />
+          <StatCard value="4+"      label="Sectors Planned" />
         </div>
       </section>
 
@@ -351,7 +389,7 @@ export default function HomePage() {
             What&apos;s Inside
           </p>
           <h2 style={{ margin: '0 0 16px', fontSize: 'clamp(24px, 4vw, 36px)', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--bs-text)' }}>
-            Six modules. Full sector coverage.
+            Six modules live. More on the way.
           </h2>
           <div style={{
             display: 'inline-flex', alignItems: 'center', gap: 7,
@@ -364,13 +402,27 @@ export default function HomePage() {
             </span>
           </div>
         </div>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+        {/* Live modules */}
+        <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: 'var(--bs-amber)', textTransform: 'uppercase', letterSpacing: '0.09em' }}>
+          Live now — Banking Sector
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16, marginBottom: 32 }}>
           <FeatureCard href="/overview"      icon={IconLayoutDashboard} title="Sector Overview"    desc="High-level KPIs, asset growth trend, market share and macro snapshot across the full sector." />
           <FeatureCard href="/banks"         icon={IconBuildingBank}    title="Bank Comparison"    desc="Side-by-side metrics for all 10 banks — assets, deposits, loans, NPL ratios, ROA and YoY growth." />
           <FeatureCard href="/balance-sheet" icon={IconBook2}           title="Balance Sheet"      desc="Asset and liability composition, loans-to-deposits ratios, and structural trends over 8 years." />
           <FeatureCard href="/pnl"           icon={IconChartBar}        title="Profit & Loss"      desc="Revenue breakdown, operating costs, cost-to-income ratios, NIM and net income by bank." />
           <FeatureCard href="/macro"         icon={IconWorld}           title="Macro Indicators"   desc="GDP growth, inflation, exchange rate, lending and deposit rates — Tanzania's economic backdrop." />
           <FeatureCard href="/risk"          icon={IconAlertTriangle}   title="Credit & Risk"      desc="NPL ratios, provision coverage and risk tier classification across every institution." />
+        </div>
+
+        {/* Roadmap */}
+        <p style={{ margin: '0 0 12px', fontSize: 11, fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '0.09em' }}>
+          Expanding soon
+        </p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 16 }}>
+          <ComingSoonCard icon={IconRocket}      title="Startups & SMEs"     eta="Coming soon" desc="Funding rounds, growth metrics and sector breakdown for Tanzania's emerging startup ecosystem." />
+          <ComingSoonCard icon={IconBriefcase}   title="Investment Funds"    eta="Coming soon" desc="Unit trusts, pension fund allocations, and investment portfolio performance across fund managers." />
+          <ComingSoonCard icon={IconChartCandle} title="DSE Stocks & Bonds"  eta="Coming soon" desc="Listed company financials, price trends, T-bill and T-bond auction results from the Dar es Salaam Stock Exchange." />
         </div>
       </section>
 
@@ -426,9 +478,10 @@ export default function HomePage() {
         <h2 style={{ margin: '0 0 16px', fontSize: 'clamp(24px, 4vw, 40px)', fontWeight: 800, letterSpacing: '-0.02em', color: 'var(--bs-text)' }}>
           Ready to decode Tanzania&apos;s banking sector?
         </h2>
-        <p style={{ margin: '0 auto 36px', maxWidth: 480, fontSize: 15, color: 'var(--bs-muted)', lineHeight: 1.6 }}>
-          Interactive charts, sector KPIs, and professional-grade analysis — built for
-          analysts, economists, and financial decision-makers.
+        <p style={{ margin: '0 auto 36px', maxWidth: 500, fontSize: 15, color: 'var(--bs-muted)', lineHeight: 1.6 }}>
+          Start with banking — then watch FinSights grow into Tanzania&apos;s most
+          comprehensive financial intelligence platform, covering banks, startups,
+          investments, and stocks.
         </p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link href="/overview">
