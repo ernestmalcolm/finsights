@@ -32,6 +32,7 @@ const theme = createTheme({
     Button: { defaultProps: { size: 'sm' } },
     Select: { defaultProps: { size: 'sm' } },
     Badge: { defaultProps: { radius: 'sm' } },
+    NumberInput: { defaultProps: { thousandSeparator: ',' } },
   },
 });
 
@@ -84,7 +85,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head />
-      <body className={`${sora.variable} ${ibmMono.variable}`}>
+      <body className={`${sora.variable} ${ibmMono.variable}`} suppressHydrationWarning>
         {/*
           ColorSchemeScript must be the FIRST child of <body> so it runs before
           React hydrates and prevents color-scheme flash. Placing it in <head>

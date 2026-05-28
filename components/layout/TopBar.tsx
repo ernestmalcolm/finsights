@@ -1,11 +1,12 @@
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useMantineColorScheme } from '@mantine/core';
-import { IconSun, IconMoon, IconMenu2 } from '@tabler/icons-react';
+import { IconSun, IconMoon, IconMenu2, IconLogout } from '@tabler/icons-react';
 import { useYear } from '@/lib/context';
 import { YEARS } from '@/lib/data';
 import Logo from '@/components/Logo';
+import { createClient } from '@/lib/supabase/client';
 
 const PAGE_TITLES: Record<string, string> = {
   '/overview':      'Sector Overview',
@@ -19,10 +20,18 @@ const PAGE_TITLES: Record<string, string> = {
 interface Props { collapsed: boolean; onToggle: () => void; }
 
 export default function TopBar({ collapsed, onToggle }: Props) {
-  const path = usePathname();
+  const path     = usePathname();
+  const router   = useRouter();
   const { toggleColorScheme } = useMantineColorScheme();
   const { year, setYear } = useYear();
-  const title = PAGE_TITLES[path] ?? 'FinSights';
+  const title    = PAGE_TITLES[path] ?? 'FinSights';
+  const supabase = createClient();
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    router.push('/login');
+    router.refresh();
+  }
 
   return (
     <header style={{
@@ -105,6 +114,19 @@ export default function TopBar({ collapsed, onToggle }: Props) {
       >
         Tanzania
       </div>
+
+      {/* Sign out */}
+      <button
+        onClick={handleSignOut}
+        title="Sign out"
+        style={{
+          background: 'var(--bs-card)', border: '1px solid var(--bs-border)', borderRadius: 8,
+          color: 'var(--bs-muted)', width: 36, height: 36, display: 'flex',
+          alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0,
+        }}
+      >
+        <IconLogout size={15} />
+      </button>
     </header>
   );
 }

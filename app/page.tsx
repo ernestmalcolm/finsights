@@ -10,7 +10,7 @@ import {
   IconMail, IconBrandLinkedin, IconArrowRight, IconExternalLink,
   IconCheck, IconTrendingUp, IconLock, IconLockOpen,
   IconRocket, IconChartCandle, IconBriefcase, IconClock,
-  IconSun, IconMoon,
+  IconSun, IconMoon, IconLogin,
 } from '@tabler/icons-react';
 
 // ── Contact modal ────────────────────────────────────────────────────────────
@@ -274,16 +274,16 @@ export default function HomePage() {
           >
             Contact
           </button>
-          <Link href="/overview">
+          <Link href="/login">
             <button style={{
               background: 'var(--bs-amber)', border: 'none', borderRadius: 8,
               color: '#000', padding: '8px 18px', fontSize: 13, fontWeight: 700,
               cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
               fontFamily: 'var(--font-sora)',
             }}>
-              <span className="fs-nav-btn-text">View Dashboard</span>
-              <span style={{ display: 'none' }} className="fs-nav-btn-icon">Dashboard</span>
-              <IconArrowRight size={14} />
+              <span className="fs-nav-btn-text">Sign In</span>
+              <span style={{ display: 'none' }} className="fs-nav-btn-icon">Login</span>
+              <IconLogin size={14} />
             </button>
           </Link>
         </div>
@@ -346,7 +346,7 @@ export default function HomePage() {
 
           {/* CTAs */}
           <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/overview">
+            <Link href="/login">
               <button style={{
                 background: 'var(--bs-amber)', border: 'none', borderRadius: 10,
                 color: '#000', padding: '14px 28px', fontSize: 15, fontWeight: 700,
@@ -490,7 +490,7 @@ export default function HomePage() {
           investments, and stocks.
         </p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-          <Link href="/overview">
+          <Link href="/login">
             <button style={{
               background: 'var(--bs-amber)', border: 'none', borderRadius: 10,
               color: '#000', padding: '14px 30px', fontSize: 15, fontWeight: 700,
@@ -545,7 +545,7 @@ export default function HomePage() {
           >
             Contact
           </button>
-          <Link href="/overview" style={{
+          <Link href="/login" style={{
             display: 'flex', alignItems: 'center', gap: 5,
             color: 'var(--bs-muted)', textDecoration: 'none', fontSize: 13,
           }}>

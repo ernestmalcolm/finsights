@@ -14,7 +14,6 @@ interface LogoProps {
 
 export default function Logo({ size = 32, iconOnly = false }: LogoProps) {
   const r = Math.round(size * 0.22);   // corner radius scales with size
-  const half = size / 2;
   const fontSize = Math.round(size * 0.5);
 
   return (
